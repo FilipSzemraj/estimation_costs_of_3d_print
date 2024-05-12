@@ -1,0 +1,102 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  width: 50%;
+  max-width: 500px;
+  margin: 20px auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+input[type="file"],
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  span {
+    width: 50px;
+    text-align: center;
+  }
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    width: 80%;
+  }
+}
+
+.viewerContainer {
+  width: 100vw;
+  height: 42.5vh;
+  border: 1px solid #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dataDisplay {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  align-items: center;
+
+  .dataValue {
+    background-color: #e6e6e6;
+    padding: 5px 10px;
+    border-radius: 4px;
+    width: 50%;
+  }
+}
