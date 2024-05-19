@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classes from './SharedFormStyles.module.scss';
 
-export function EstimateForm() {
+export function EstimateForm({setFormData, setShowTable, setFileUrl}) {
     const [file, setFile] = useState(null);
     const [material, setMaterial] = useState("");
     const [postProcessing, setPostProcessing] = useState("");
@@ -11,7 +11,14 @@ export function EstimateForm() {
     const [quantity, setQuantity] = useState(1);
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
+        //setFile(event.target.files[0]);
+        const file = event.target.files[0];
+        if (file) {
+            setFile(file);
+            const url = URL.createObjectURL(file);
+            setFileUrl(url);  // Create a blob URL and store it
+            console.log(`Preview URL: ${url}`);
+        }
     };
 
     const incrementQuantity = () => setQuantity((prev) => prev + 1);
@@ -21,17 +28,39 @@ export function EstimateForm() {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log({
-            file,
-            material,
-            postProcessing,
-            quality,
-            filling,
-            executionTime,
-            quantity,
-        });
+
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('materialId', parseInt(material, 10));
+        formData.append('infillPercentage', parseInt(filling, 10));
+        formData.append('surfaceThickness', 0.05);
+        formData.append('unit', 'mm');
+        formData.append('postProcessing', postProcessing);
+        formData.append('executionTime', executionTime);
+        formData.append('quantity', parseInt(quantity, 10));
+        formData.append('quality', quality);
+
+        try{
+            const response = await fetch('http://localhost:8080/upload', {
+               method:'POST',
+               body: formData
+            });
+
+            if(!response.ok){
+                throw new Error("Error while trying to get data from API");
+            }
+
+            const data = await response.json();
+            console.log("Success: ", data);
+            setFormData(data);
+            setShowTable(true);
+            }catch(error){
+            console.log("Error: ", error);
+            setShowTable(false);
+        }
     };
 
     return (
@@ -44,9 +73,8 @@ export function EstimateForm() {
                 <label>Material:</label>
                 <select value={material} onChange={(e) => setMaterial(e.target.value)} className={classes.inputField}>
                     <option value="">Select Material</option>
-                    <option value="PLA">PLA</option>
-                    <option value="PLA - Hyper">PLA - Hyper</option>
-                    <option value="ABS">ABS</option>
+                    <option value="1">PLA</option>
+                    <option value="2">ABS</option>
                 </select>
             </div>
             <div className={classes.inputGroup}>
